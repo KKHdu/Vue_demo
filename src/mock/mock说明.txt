@@ -1,0 +1,13 @@
+mock
+前端测试使用，
+模拟 后台 接收/判断/返回 给前端的数据
+
+在main.js中引入mock,并且初始化
+--> import Mock from './mock';
+--> Mock.init()
+
+全局安装
+--> cnpm install mockjs --save
+--> cnpm install axios-mock-adapter --save
+
+# 正式向后台请求数据，mock需要关闭
