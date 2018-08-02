@@ -8,7 +8,7 @@
                 <el-row :gutter="20">
                     <el-col :span="12" :offset="6">
                         <div class="grid-content bg-purple">
-                             <el-input v-model="find" clearable @keyup.enter.native="findOne" :placeholder=findby></el-input>
+                             <el-input v-model="find" clearable @keyup.enter.native="findOne" :placeholder="findby"></el-input>
                         </div>
                     </el-col>
                 </el-row>
@@ -24,7 +24,7 @@
                                 <!-- fixed 属性，接收Boolean值/left/right 固定在表格左/右 -->
                                 <template slot-scope="scope">
                                     <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                                    <el-button type="text" size="small">编辑</el-button>
+                                    <el-button @click="DelOne(scope.row)" type="text" size="small">移除</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -38,6 +38,7 @@
 <script>
 import {requestUserInfo} from '../api/api';
 import {requestUserFind} from '../api/api';
+import {requestUserDel} from '../api/api';
 
 export default {
     data () {
@@ -69,18 +70,38 @@ export default {
             });
         },
         findOne () {
-            var FUParams = {uName:this.find} // 请求参数
-            console.log(FUParams);
-            requestUserFind(FUParams).then(data => {
-                console.log(data);
-                this.$message({
-                    message:"查询成功",
-                    type:'success'
+            if(this.find != ''){
+                var FUParams = {uName:this.find} // 请求参数
+                // console.log(FUParams);
+                requestUserFind(FUParams).then(data => {
+                    // console.log(data);
+                    this.$message({
+                        message:"查询成功",
+                        type:'success'
+                    });
+                    this.LIST = data.jsonStr
+                }).catch((err) => {
+                    this.$message({
+                        message:"查询失败",
+                        type:'error'
+                    });
                 });
-                this.LIST = data.jsonStr
+            }else{
+                this.handleUserInfo();
+            }
+        },
+        DelOne (requ) {
+            var DelParams = {id:requ.id}
+            // console.log(DelParams);
+            requestUserDel(DelParams).then(data => {
+                this.$message({
+                    message:"删除成功",
+                    type:'infomation'
+                });
+                this.LIST.splice(this.LIST.indexOf(requ), 1) // 页面表格删除这条栏位
             }).catch((err) => {
                 this.$message({
-                    message:"查询失败",
+                    message:"请求失败",
                     type:'error'
                 });
             });
