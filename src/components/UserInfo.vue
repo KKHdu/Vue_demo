@@ -8,7 +8,7 @@
                 <el-row :gutter="20">
                     <el-col :span="12" :offset="6">
                         <div class="grid-content bg-purple">
-                             <el-input clearable @keyup.enter.native="findOne"></el-input>
+                             <el-input v-model="find" clearable @keyup.enter.native="findOne" :placeholder=findby></el-input>
                         </div>
                     </el-col>
                 </el-row>
@@ -37,22 +37,25 @@
 
 <script>
 import {requestUserInfo} from '../api/api';
+import {requestUserFind} from '../api/api';
 
 export default {
     data () {
         return {
             msg: 'User-Info List',
-            LIST:[] // 初始化LIST 作为用户信息数组
+            findby: '输入用户名搜索',
+            LIST: [], // 初始化LIST 作为用户信息数组
+            find: ''  // 初始化查询参数
         }
     },
-    mounted () { // 生命周期
+    mounted () { // 生命周期  -->  控制自动加载请求数据
         this.handleUserInfo()
     },
     methods: {
         handleUserInfo () {
             requestUserInfo().then(data => {
-                console.log(data);
-                console.log(data.jsonStr[0].uName); 
+                // console.log(data);
+                // console.log(data.jsonStr[0].uName); 
                 this.$message({
                   message: "请求成功",
                   type: 'success'
@@ -64,7 +67,25 @@ export default {
                   type: 'error'
                 });
             });
-        }        
+        },
+        findOne () {
+            var FUParams = {uName:this.find}
+            console.log(FUParams);
+            requestUserFind(FUParams).then(data => {
+                console.log(data);
+                this.$message({
+                    message:"查询成功",
+                    type:'success'
+                });
+                this.LIST = data.jsonStr
+            }).catch((err) => {
+                this.$message({
+                    message:"查询失败",
+                    type:'error'
+                });
+            });
+        }
+
     }
 }
 </script>

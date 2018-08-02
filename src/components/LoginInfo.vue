@@ -66,14 +66,17 @@
               }else{
                 this.$message({
                   message: "请检查账号/密码",
-                  type: 'error'
+                  type: 'warning'
                 });
               }
               
             });
  
           } else {
-            console.log('error submit!!');
+            this.$message({
+                  message: "请求错误",
+                  type: 'error'
+                });
             return false;
           }
         });
