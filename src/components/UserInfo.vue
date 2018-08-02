@@ -69,7 +69,7 @@ export default {
             });
         },
         findOne () {
-            var FUParams = {uName:this.find}
+            var FUParams = {uName:this.find} // 请求参数
             console.log(FUParams);
             requestUserFind(FUParams).then(data => {
                 console.log(data);
