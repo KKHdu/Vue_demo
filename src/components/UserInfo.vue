@@ -23,7 +23,7 @@
                             <el-table-column fixed="right" label="ACTION"> 
                                 <!-- fixed 属性，接收Boolean值/left/right 固定在表格左/右 -->
                                 <template slot-scope="scope">
-                                    <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                                    <el-button @click="EditOne(scope.row)" type="text" size="small">查看</el-button>
                                     <el-button @click="DelOne(scope.row)" type="text" size="small">移除</el-button>
                                 </template>
                             </el-table-column>
@@ -105,6 +105,11 @@ export default {
                     type:'error'
                 });
             });
+        },
+        EditOne (requ) {
+            console.log(requ.id);
+            this.$router.push({path:'/Uinformation',query:{id:requ.id}})
+            // 或者 this.$router.push({path:'/MovieContent',params:{id:this.eleId}})
         }
 
     }
